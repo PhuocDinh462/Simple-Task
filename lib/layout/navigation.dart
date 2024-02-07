@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/screens/done.dart';
 import 'package:to_do_list/screens/settings.dart';
 import 'package:to_do_list/screens/to_do.dart';
+import 'package:to_do_list/utils/colors.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -22,7 +23,7 @@ class _NavigationState extends State<Navigation> {
             currentScreenIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: MainColors.primary_200,
         selectedIndex: currentScreenIndex,
         destinations: const <Widget>[
           NavigationDestination(
