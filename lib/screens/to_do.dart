@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:to_do_list/widgets/custom_search_bar.dart';
 
 class ToDo extends StatefulWidget {
   final bool searchOpen = false;
@@ -39,34 +40,8 @@ class ToDoState extends State<ToDo> {
                 Expanded(
                   flex: 1,
                   child: searchOpen
-                      ? const SizedBox(
-                          child: TextField(
-                            autofocus: true,
-                            cursorColor: TextColors.color_50,
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: TextColors.color_50),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: TextColors.color_50),
-                                ),
-                                border: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: TextColors.color_50),
-                                ),
-                                hintText: 'Search',
-                                hintStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: TextColors.color_50,
-                                )),
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: TextColors.color_50,
-                            ),
-                          ),
-                        )
+                      ? const CustomSearchBar(
+                          textColor: TextColors.color_50, hintText: 'Search')
                       : const Text(
                           'ToDo',
                           style: TextStyle(
