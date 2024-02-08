@@ -29,7 +29,7 @@ class FilterMenu extends StatelessWidget {
           tooltip: 'Filter',
         );
       },
-      alignmentOffset: const Offset(-80, 0),
+      // alignmentOffset: const Offset(-80, 0),
       menuChildren: List<MenuItemButton>.generate(
         3,
         (int index) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
+import 'package:to_do_list/widgets/task_item.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({Key? key}) : super(key: key);
@@ -76,9 +77,20 @@ class ToDoState extends State<ToDo> {
           ),
 
           // Body
-          Container(
-            child: Text(selectedMenu.toString()),
-          ),
+          const Column(
+            children: [
+              SizedBox(height: 15),
+              TaskItem(),
+              SizedBox(height: 15),
+              Divider(
+                height: .5,
+                thickness: .5,
+                indent: 15,
+                endIndent: 15,
+                color: TextColors.color_600,
+              ),
+            ],
+          )
         ],
       ),
     );
