@@ -18,24 +18,36 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentScreenIndex = index;
-          });
-        },
-        indicatorColor: MainColors.primary_200,
+        onDestinationSelected: (int index) =>
+            setState(() => currentScreenIndex = index),
+        indicatorColor: MainColors.primary_300,
         selectedIndex: currentScreenIndex,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.check_box_outline_blank_rounded),
+            icon: Icon(
+              Icons.check_box_outline_blank_rounded,
+              color: currentScreenIndex == 0
+                  ? TextColors.color_50
+                  : TextColors.color_900,
+            ),
             label: 'ToDo',
           ),
           NavigationDestination(
-            icon: Icon(Icons.check_box_outlined),
+            icon: Icon(
+              Icons.check_box_outlined,
+              color: currentScreenIndex == 1
+                  ? TextColors.color_50
+                  : TextColors.color_900,
+            ),
             label: 'Done',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: currentScreenIndex == 2
+                  ? TextColors.color_50
+                  : TextColors.color_900,
+            ),
             label: 'Settings',
           ),
         ],
