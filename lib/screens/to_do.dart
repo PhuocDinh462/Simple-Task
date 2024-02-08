@@ -53,11 +53,18 @@ class ToDoState extends State<ToDo> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(left: 15.0),
-                  child: IconButton(
-                    onPressed: () => setState(() => searchOpen = !searchOpen),
-                    icon: Icon(searchOpen ? Icons.clear_sharp : Icons.search),
-                    iconSize: 32,
-                    color: TextColors.color_50,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () =>
+                            setState(() => searchOpen = !searchOpen),
+                        icon:
+                            Icon(searchOpen ? Icons.clear_sharp : Icons.search),
+                        iconSize: 32,
+                        color: TextColors.color_50,
+                      ),
+                      const FilterMenu(),
+                    ],
                   ),
                 ),
               ],
@@ -68,6 +75,63 @@ class ToDoState extends State<ToDo> {
         // Body
         Container(),
       ],
+    );
+  }
+}
+
+enum FilterItem { all, today, upComing }
+
+class FilterMenu extends StatefulWidget {
+  const FilterMenu({Key? key}) : super(key: key);
+
+  @override
+  State<FilterMenu> createState() => _FilterMenuState();
+}
+
+class _FilterMenuState extends State<FilterMenu> {
+  FilterItem? selectedMenu;
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuAnchor(
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
+        return IconButton(
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          icon: const Icon(Icons.filter_alt),
+          iconSize: 32,
+          color: TextColors.color_50,
+          tooltip: 'Filter',
+        );
+      },
+      alignmentOffset: const Offset(-80, 0),
+      menuChildren: List<MenuItemButton>.generate(
+        3,
+        (int index) {
+          final FilterItem item = FilterItem.values[index];
+          return MenuItemButton(
+            onPressed: () => setState(() => selectedMenu = item),
+            child: Text(
+              index == 0
+                  ? 'All'
+                  : index == 1
+                      ? 'Today'
+                      : 'Up coming',
+              style: TextStyle(
+                  fontSize: 18,
+                  color: selectedMenu == item
+                      ? MainColors.primary_300
+                      : TextColors.color_700),
+            ),
+          );
+        },
+      ),
     );
   }
 }
