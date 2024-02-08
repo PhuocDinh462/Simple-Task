@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
+import 'package:to_do_list/widgets/filter_menu.dart';
 
 class ToDo extends StatefulWidget {
-  final bool searchOpen = false;
-
   const ToDo({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return ToDoState();
-  }
+  State<StatefulWidget> createState() => ToDoState();
 }
 
 class ToDoState extends State<ToDo> {
   late bool searchOpen;
+  late FilterItem selectedMenu;
 
   @override
   void initState() {
     super.initState();
-    searchOpen = widget.searchOpen;
+    searchOpen = false;
+    selectedMenu = FilterItem.all;
   }
 
   @override
@@ -63,7 +62,10 @@ class ToDoState extends State<ToDo> {
                         iconSize: 32,
                         color: TextColors.color_50,
                       ),
-                      const FilterMenu(),
+                      FilterMenu(
+                          selectedMenu: selectedMenu,
+                          onItemSelected: (item) =>
+                              setState(() => selectedMenu = item)),
                     ],
                   ),
                 ),
@@ -73,65 +75,10 @@ class ToDoState extends State<ToDo> {
         ),
 
         // Body
-        Container(),
+        Container(
+          child: Text(selectedMenu.toString()),
+        ),
       ],
-    );
-  }
-}
-
-enum FilterItem { all, today, upComing }
-
-class FilterMenu extends StatefulWidget {
-  const FilterMenu({Key? key}) : super(key: key);
-
-  @override
-  State<FilterMenu> createState() => _FilterMenuState();
-}
-
-class _FilterMenuState extends State<FilterMenu> {
-  FilterItem? selectedMenu;
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-        return IconButton(
-          onPressed: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
-          },
-          icon: const Icon(Icons.filter_alt),
-          iconSize: 32,
-          color: TextColors.color_50,
-          tooltip: 'Filter',
-        );
-      },
-      alignmentOffset: const Offset(-80, 0),
-      menuChildren: List<MenuItemButton>.generate(
-        3,
-        (int index) {
-          final FilterItem item = FilterItem.values[index];
-          return MenuItemButton(
-            onPressed: () => setState(() => selectedMenu = item),
-            child: Text(
-              index == 0
-                  ? 'All'
-                  : index == 1
-                      ? 'Today'
-                      : 'Up coming',
-              style: TextStyle(
-                  fontSize: 18,
-                  color: selectedMenu == item
-                      ? MainColors.primary_300
-                      : TextColors.color_700),
-            ),
-          );
-        },
-      ),
     );
   }
 }
