@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:to_do_list/models/task.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({Key? key}) : super(key: key);
+  const TaskItem({Key? key, required this.task}) : super(key: key);
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -32,22 +35,22 @@ class TaskItem extends StatelessWidget {
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width - 100,
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'lorem ipsum dolor sit amet, con lorem ipsum dolor sit amet, con lorem ipsum dolor sit amet, con',
+                      task.content,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 17,
                         color: TextColors.color_900,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
-                      'Due to: 03/01/2024 23:59',
-                      style: TextStyle(
+                      'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
+                      style: const TextStyle(
                         fontSize: 14,
                         color: TextColors.color_400,
                       ),

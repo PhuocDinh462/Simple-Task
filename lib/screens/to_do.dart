@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
@@ -14,6 +15,27 @@ class ToDo extends StatefulWidget {
 class ToDoState extends State<ToDo> {
   bool searchOpen = false;
   FilterItem selectedMenu = FilterItem.all;
+
+  List<Task> toDoTasks = [
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -77,20 +99,27 @@ class ToDoState extends State<ToDo> {
           ),
 
           // Body
-          const Column(
-            children: [
-              SizedBox(height: 15),
-              TaskItem(),
-              SizedBox(height: 15),
-              Divider(
-                height: .5,
-                thickness: .5,
-                indent: 15,
-                endIndent: 15,
-                color: TextColors.color_600,
-              ),
-            ],
-          )
+          Expanded(
+            child: ListView(
+              children: [
+                ...toDoTasks.map((task) => Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        TaskItem(task: task),
+                        const SizedBox(height: 15),
+                        const Divider(
+                          height: .5,
+                          thickness: .5,
+                          indent: 15,
+                          endIndent: 15,
+                          color: TextColors.color_600,
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 90),
+              ],
+            ),
+          ),
         ],
       ),
     );
