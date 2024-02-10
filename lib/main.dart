@@ -12,18 +12,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: MainColors.primary_300,
+        statusBarColor: Colors.transparent,
       ),
     );
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.blue,
+        primaryColor: MainColors.primary_300,
       ),
-      home: const SafeArea(
-        child: Navigation(),
-      ),
+      home: const Navigation(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -44,10 +44,10 @@ class ToDoState extends State<ToDo> {
           // Header
           Container(
             color: MainColors.primary_300,
-            height: 60,
+            height: MediaQuery.of(context).viewPadding.top + 60,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+              padding: EdgeInsets.fromLTRB(
+                  10, MediaQuery.of(context).viewPadding.top, 10, 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
