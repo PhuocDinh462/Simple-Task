@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
 import 'package:to_do_list/widgets/task_item.dart';
+import 'package:to_do_list/providers/task_list_provider.dart';
+import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({Key? key}) : super(key: key);
@@ -17,14 +18,17 @@ class ToDoState extends State<ToDo> {
   bool searchOpen = false;
   FilterItem selectedMenu = FilterItem.all;
 
-  List<Task> toDoTasks = [
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-  ];
+  // List<Task> toDoTasks = [
+  //   Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
+  //   Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
+  //   Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
+  // ];
 
   @override
   Widget build(BuildContext context) {
+    final TaskListProvider taskListProvider =
+        Provider.of<TaskListProvider>(context);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -95,7 +99,7 @@ class ToDoState extends State<ToDo> {
           Expanded(
             child: ListView(
               children: [
-                ...toDoTasks.map((task) => Column(
+                ...taskListProvider.taskList.map((task) => Column(
                       children: [
                         const SizedBox(height: 15),
                         TaskItem(task: task),

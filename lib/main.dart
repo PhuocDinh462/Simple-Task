@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/layout/navigation.dart';
 import 'package:flutter/services.dart';
+import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      ChangeNotifierProvider(
+        create: (context) => TaskListProvider(),
+        child: const MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

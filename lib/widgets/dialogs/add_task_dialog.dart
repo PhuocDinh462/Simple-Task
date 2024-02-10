@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:to_do_list/providers/task_list_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddTaskDialog extends StatefulWidget {
   const AddTaskDialog({super.key});
@@ -56,6 +59,9 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final TaskListProvider taskListProvider =
+        Provider.of<TaskListProvider>(context);
+
     return AlertDialog(
       title: const Text('Add Task'),
       content: Column(
@@ -94,13 +100,10 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            // Handle the submit action here
-            // String taskName = _textController.text;
-            // DateTime dueDate = _selectedDate;
-
-            // Do something with taskName and dueDate
-            // print('Task Name: $taskName');
-            // print('Due Date: $dueDate');
+            // Handle the submit action
+            String taskName = _textController.text;
+            DateTime dueDate = _selectedDate;
+            taskListProvider.addTask(Task(content: taskName, due: dueDate));
 
             Navigator.of(context).pop(); // Close the dialog
           },
