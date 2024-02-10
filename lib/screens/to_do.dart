@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
+import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
 import 'package:to_do_list/widgets/task_item.dart';
 
@@ -20,28 +21,20 @@ class ToDoState extends State<ToDo> {
     Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
     Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
     Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-    Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-    Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-    Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AddTaskDialog();
+            },
+          );
+        },
         foregroundColor: TextColors.color_50,
         backgroundColor: MainColors.primary_300,
         child: const Icon(Icons.add),

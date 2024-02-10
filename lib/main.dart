@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
+      ),
       home: const SafeArea(
         child: Navigation(),
       ),
