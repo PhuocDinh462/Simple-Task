@@ -73,7 +73,9 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               TextButton(
                 onPressed: () => _selectDateAndTime(context),
                 child: Text(
-                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year} ${_selectedTime.hour}:${_selectedTime.minute}',
+                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year} '
+                  '${_selectedTime.hour < 10 ? 0 : ""}${_selectedTime.hour}:'
+                  '${_selectedTime.minute < 10 ? 0 : ""}${_selectedTime.minute}',
                 ),
               ),
             ],
@@ -93,8 +95,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         ElevatedButton(
           onPressed: () {
             // Handle the submit action here
-            String taskName = _textController.text;
-            DateTime dueDate = _selectedDate;
+            // String taskName = _textController.text;
+            // DateTime dueDate = _selectedDate;
 
             // Do something with taskName and dueDate
             // print('Task Name: $taskName');
