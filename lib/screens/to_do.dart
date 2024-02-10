@@ -18,12 +18,6 @@ class ToDoState extends State<ToDo> {
   bool searchOpen = false;
   FilterItem selectedMenu = FilterItem.all;
 
-  // List<Task> toDoTasks = [
-  //   Task(content: 'Task 1', due: DateTime(2024, 3, 1)),
-  //   Task(content: 'Task 2', due: DateTime(2024, 3, 2)),
-  //   Task(content: 'Task 3', due: DateTime(2024, 3, 3)),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     final TaskListProvider taskListProvider =

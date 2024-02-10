@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/models/task.dart';
+import 'package:to_do_list/providers/task_list_provider.dart';
+import 'package:provider/provider.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({Key? key, required this.task}) : super(key: key);
@@ -63,7 +65,7 @@ class TaskItem extends StatelessWidget {
         ),
 
         // Tool menu
-        const ToolMenu(),
+        ToolMenu(task: task),
       ],
     );
   }
@@ -72,10 +74,16 @@ class TaskItem extends StatelessWidget {
 class ToolMenu extends StatelessWidget {
   const ToolMenu({
     Key? key,
+    required this.task,
   }) : super(key: key);
+
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
+    final TaskListProvider taskListProvider =
+        Provider.of<TaskListProvider>(context);
+
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
@@ -97,7 +105,13 @@ class ToolMenu extends StatelessWidget {
         2,
         (int index) {
           return MenuItemButton(
-            onPressed: () {},
+            onPressed: () {
+              if (index == 0) {
+                // Edit task
+              } else {
+                taskListProvider.deleteTask(task);
+              }
+            },
             child: Row(
               children: [
                 Icon(

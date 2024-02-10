@@ -10,4 +10,9 @@ class TaskListProvider with ChangeNotifier {
     taskList.add(task);
     notifyListeners();
   }
+
+  void deleteTask(Task task) {
+    taskList.remove(task);
+    notifyListeners();
+  }
 }
