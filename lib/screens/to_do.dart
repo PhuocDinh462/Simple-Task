@@ -93,7 +93,18 @@ class ToDoState extends State<ToDo> {
           Expanded(
             child: ListView(
               children: [
-                ...taskListProvider.taskList.map((task) => Column(
+                ...taskListProvider.taskList.where((task) {
+                  if (selectedMenu == FilterItem.all) {
+                    return true;
+                  } else if (selectedMenu == FilterItem.today) {
+                    final now = DateTime.now();
+                    return task.due.year == now.year &&
+                        task.due.month == now.month &&
+                        task.due.day == now.day;
+                  } else {
+                    return task.due.isAfter(DateTime.now());
+                  }
+                }).map((task) => Column(
                       children: [
                         const SizedBox(height: 15),
                         TaskItem(task: task),

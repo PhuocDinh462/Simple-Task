@@ -53,9 +53,11 @@ class TaskItem extends StatelessWidget {
                     const SizedBox(height: 5),
                     Text(
                       'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: TextColors.color_400,
+                        color: task.due.isAfter(DateTime.now())
+                            ? TextColors.color_400
+                            : Colors.red,
                       ),
                     )
                   ],
