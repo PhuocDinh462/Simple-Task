@@ -16,6 +16,7 @@ class ToDo extends StatefulWidget {
 
 class ToDoState extends State<ToDo> {
   bool searchOpen = false;
+  String searchText = "";
   FilterItem selectedMenu = FilterItem.all;
 
   @override
@@ -53,8 +54,11 @@ class ToDoState extends State<ToDo> {
                   Expanded(
                     flex: 1,
                     child: searchOpen
-                        ? const CustomSearchBar(
-                            textColor: TextColors.color_50, hintText: 'Search')
+                        ? CustomSearchBar(
+                            textColor: TextColors.color_50,
+                            hintText: 'Search',
+                            onChanged: (value) =>
+                                setState(() => searchText = value))
                         : const Text(
                             'ToDo',
                             style: TextStyle(
@@ -93,31 +97,38 @@ class ToDoState extends State<ToDo> {
           Expanded(
             child: ListView(
               children: [
-                ...taskListProvider.taskList.where((task) {
-                  if (selectedMenu == FilterItem.all) {
-                    return true;
-                  } else if (selectedMenu == FilterItem.today) {
-                    final now = DateTime.now();
-                    return task.due.year == now.year &&
-                        task.due.month == now.month &&
-                        task.due.day == now.day;
-                  } else {
-                    return task.due.isAfter(DateTime.now());
-                  }
-                }).map((task) => Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        TaskItem(task: task),
-                        const SizedBox(height: 15),
-                        const Divider(
-                          height: .5,
-                          thickness: .5,
-                          indent: 15,
-                          endIndent: 15,
-                          color: TextColors.color_600,
-                        ),
-                      ],
-                    )),
+                ...taskListProvider.taskList
+                    // Filter
+                    .where((element) {
+                      if (selectedMenu == FilterItem.all) {
+                        return true;
+                      } else if (selectedMenu == FilterItem.today) {
+                        final now = DateTime.now();
+                        return element.due.year == now.year &&
+                            element.due.month == now.month &&
+                            element.due.day == now.day;
+                      } else {
+                        return element.due.isAfter(DateTime.now());
+                      }
+                    })
+                    // Search
+                    .where((element) => element.content
+                        .toLowerCase()
+                        .contains(searchText.toLowerCase()))
+                    .map((task) => Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            TaskItem(task: task),
+                            const SizedBox(height: 15),
+                            const Divider(
+                              height: .5,
+                              thickness: .5,
+                              indent: 15,
+                              endIndent: 15,
+                              color: TextColors.color_600,
+                            ),
+                          ],
+                        )),
                 const SizedBox(height: 90),
               ],
             ),
