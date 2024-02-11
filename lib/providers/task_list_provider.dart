@@ -15,4 +15,13 @@ class TaskListProvider with ChangeNotifier {
     taskList.remove(task);
     notifyListeners();
   }
+
+  void updateTask(String id,
+      [String? newContent, DateTime? newDue, bool? newStatus]) {
+    int index = taskList.indexWhere((task) => task.id == id);
+    taskList[index].content = newContent ?? taskList[index].content;
+    taskList[index].due = newDue ?? taskList[index].due;
+    taskList[index].status = newStatus ?? taskList[index].status;
+    notifyListeners();
+  }
 }
