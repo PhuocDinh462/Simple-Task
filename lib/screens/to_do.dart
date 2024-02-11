@@ -115,6 +115,8 @@ class ToDoState extends State<ToDo> {
                     .where((element) => element.content
                         .toLowerCase()
                         .contains(searchText.toLowerCase()))
+                    // Status
+                    .where((element) => !element.status)
                     .map((task) => Column(
                           children: [
                             const SizedBox(height: 15),

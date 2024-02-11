@@ -12,6 +12,9 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TaskListProvider taskListProvider =
+        Provider.of<TaskListProvider>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,8 +34,9 @@ class TaskItem extends StatelessWidget {
                     return null;
                   },
                 ),
-                value: false,
-                onChanged: (bool? value) {},
+                value: task.status,
+                onChanged: (bool? value) =>
+                    taskListProvider.updateTask(id: task.id, status: value),
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(
