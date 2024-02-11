@@ -16,6 +16,11 @@ class TaskListProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteAllDoneTasks() {
+    taskList.removeWhere((element) => element.status);
+    notifyListeners();
+  }
+
   void updateTask({
     String? id,
     String? content,

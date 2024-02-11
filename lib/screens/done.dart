@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
+import 'package:to_do_list/widgets/dialogs/yes_no_dialog.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
 import 'package:to_do_list/widgets/task_item.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
@@ -80,6 +81,22 @@ class DoneState extends State<Done> {
                           iconSize: 32,
                           color: TextColors.color_50,
                         ),
+                        IconButton(
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return YesNoDialog(
+                                title: 'Confirmation',
+                                content: 'Delete all done tasks?',
+                                onYesPressed: () =>
+                                    taskListProvider.deleteAllDoneTasks(),
+                              );
+                            },
+                          ),
+                          icon: const Icon(Icons.delete_forever_outlined),
+                          iconSize: 32,
+                          color: TextColors.color_50,
+                        ),
                         FilterMenu(
                           selectedMenu: selectedMenu,
                           onItemSelected: (item) =>
@@ -139,4 +156,41 @@ class DoneState extends State<Done> {
       ),
     );
   }
+}
+
+Future<bool> showAlertDialog(BuildContext context) async {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    onPressed: () {
+      Navigator.of(context).pop(false);
+    },
+    style: TextButton.styleFrom(
+      foregroundColor: TextColors.color_500,
+    ),
+    child: const Text("Cancel"),
+  );
+  Widget continueButton = TextButton(
+    onPressed: () {
+      // Thực hiện function tại đây
+      Navigator.of(context).pop(true);
+    },
+    style: ElevatedButton.styleFrom(
+      foregroundColor: MainColors.primary_300,
+    ),
+    child: const Text("Continue"),
+  ); // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Delete all done tasks?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  ); // show the dialog
+  final result = await showDialog<bool?>(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+  return result ?? false;
 }
