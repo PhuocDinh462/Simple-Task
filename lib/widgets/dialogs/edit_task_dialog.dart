@@ -4,24 +4,26 @@ import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
 
-class AddTaskDialog extends StatefulWidget {
-  const AddTaskDialog({super.key});
+class EditTaskDialog extends StatefulWidget {
+  const EditTaskDialog({super.key, required this.selectedTask});
+  final Task selectedTask;
 
   @override
-  State<StatefulWidget> createState() => _AddTaskDialogState();
+  State<StatefulWidget> createState() => _EditTaskDialogState();
 }
 
-class _AddTaskDialogState extends State<AddTaskDialog> {
+class _EditTaskDialogState extends State<EditTaskDialog> {
   late TextEditingController _textController;
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
+  late final Task _selectedTask = widget.selectedTask;
 
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController();
-    _selectedDate = DateTime.now();
-    _selectedTime = TimeOfDay.now();
+    _textController = TextEditingController(text: _selectedTask.content);
+    _selectedDate = _selectedTask.due;
+    _selectedTime = TimeOfDay.fromDateTime(_selectedTask.due);
   }
 
   @override
@@ -63,7 +65,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         Provider.of<TaskListProvider>(context);
 
     return AlertDialog(
-      title: const Text('Add Task'),
+      title: const Text('Edit Task'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -104,7 +106,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
             // Handle the submit action
             String taskContent = _textController.text;
             DateTime dueDate = _selectedDate;
-            taskListProvider.addTask(Task(content: taskContent, due: dueDate));
+            taskListProvider.updateTask(
+                id: _selectedTask.id, content: taskContent, due: dueDate);
 
             Navigator.of(context).pop(); // Close the dialog
           },
@@ -112,7 +115,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
             backgroundColor: MainColors.primary_300,
             foregroundColor: TextColors.color_50,
           ),
-          child: const Text('Add'),
+          child: const Text('Edit'),
         ),
       ],
     );

@@ -4,6 +4,7 @@ import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do_list/widgets/dialogs/edit_task_dialog.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({Key? key, required this.task}) : super(key: key);
@@ -108,6 +109,12 @@ class ToolMenu extends StatelessWidget {
             onPressed: () {
               if (index == 0) {
                 // Edit task
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return EditTaskDialog(selectedTask: task);
+                  },
+                );
               } else {
                 taskListProvider.deleteTask(task);
               }

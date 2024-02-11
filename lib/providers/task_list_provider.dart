@@ -16,12 +16,31 @@ class TaskListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTask(String id,
-      [String? newContent, DateTime? newDue, bool? newStatus]) {
+  void updateTask({
+    String? id,
+    String? content,
+    DateTime? due,
+    bool? status,
+  }) {
+    if (id == null) return;
+
     int index = taskList.indexWhere((task) => task.id == id);
-    taskList[index].content = newContent ?? taskList[index].content;
-    taskList[index].due = newDue ?? taskList[index].due;
-    taskList[index].status = newStatus ?? taskList[index].status;
+    if (index == -1) return;
+
+    Task taskToUpdate = taskList[index];
+
+    if (content != null) {
+      taskToUpdate.content = content;
+    }
+
+    if (due != null) {
+      taskToUpdate.due = due;
+    }
+
+    if (status != null) {
+      taskToUpdate.status = status;
+    }
+
     notifyListeners();
   }
 }
