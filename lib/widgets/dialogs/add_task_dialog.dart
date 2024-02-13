@@ -109,12 +109,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
             // Handle the submit action
             String taskContent = _textController.text;
             DateTime dueDate = _selectedDate;
-            taskListProvider.addTask(Task(content: taskContent, due: dueDate));
+            Task newTask = Task(content: taskContent, due: dueDate);
+            taskListProvider.addTask(newTask);
 
             Navigator.of(context).pop(); // Close the dialog
 
+            // Add notification
             await services.showSchNotification(
-                id: 0,
+                id: newTask.id.hashCode,
                 title: "Your task will be due soon!",
                 body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
                 detail: taskContent,

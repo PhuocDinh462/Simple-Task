@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/models/task.dart';
+import 'package:to_do_list/services/local_notification.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +20,17 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   late TimeOfDay _selectedTime;
   late final Task _selectedTask = widget.selectedTask;
 
+  late final LocalNotificationServices services;
+
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: _selectedTask.content);
     _selectedDate = _selectedTask.due;
     _selectedTime = TimeOfDay.fromDateTime(_selectedTask.due);
+
+    services = LocalNotificationServices();
+    services.init();
   }
 
   @override
@@ -100,7 +106,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             // Handle the submit action
             String taskContent = _textController.text;
             DateTime dueDate = _selectedDate;
@@ -108,6 +114,15 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 id: _selectedTask.id, content: taskContent, due: dueDate);
 
             Navigator.of(context).pop(); // Close the dialog
+
+            // Notification
+            await services.cancelSchNotification(id: _selectedTask.id.hashCode);
+            await services.showSchNotification(
+                id: _selectedTask.id.hashCode,
+                title: "Your task will be due soon!",
+                body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
+                detail: taskContent,
+                due: dueDate);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: MainColors.primary_300,

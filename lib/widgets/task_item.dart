@@ -5,13 +5,16 @@ import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/widgets/dialogs/edit_task_dialog.dart';
+import 'package:to_do_list/services/local_notification.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({Key? key, required this.task}) : super(key: key);
+  TaskItem({Key? key, required this.task}) : super(key: key);
   final Task task;
+  final LocalNotificationServices services = LocalNotificationServices();
 
   @override
   Widget build(BuildContext context) {
+    services.init();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -52,8 +55,23 @@ class TaskItem extends StatelessWidget {
                       },
                     ),
                     value: task.status,
-                    onChanged: (bool? value) =>
-                        taskListProvider.updateTask(id: task.id, status: value),
+                    onChanged: (bool? value) async {
+                      taskListProvider.updateTask(id: task.id, status: value);
+
+                      // Notification
+                      if (value == true) {
+                        await services.cancelSchNotification(
+                            id: task.id.hashCode);
+                      } else {
+                        await services.showSchNotification(
+                            id: task.id.hashCode,
+                            title: "Your task will be due soon!",
+                            body:
+                                "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}",
+                            detail: task.content,
+                            due: task.due);
+                      }
+                    },
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints(
@@ -99,15 +117,16 @@ class TaskItem extends StatelessWidget {
 }
 
 class ToolMenu extends StatelessWidget {
-  const ToolMenu({
+  ToolMenu({
     Key? key,
     required this.task,
   }) : super(key: key);
-
   final Task task;
+  final LocalNotificationServices services = LocalNotificationServices();
 
   @override
   Widget build(BuildContext context) {
+    services.init();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -132,7 +151,7 @@ class ToolMenu extends StatelessWidget {
         2,
         (int index) {
           return MenuItemButton(
-            onPressed: () {
+            onPressed: () async {
               if (index == 0) {
                 // Edit task
                 showDialog(
@@ -143,6 +162,7 @@ class ToolMenu extends StatelessWidget {
                 );
               } else {
                 taskListProvider.deleteTask(task);
+                await services.cancelSchNotification(id: task.id.hashCode);
               }
             },
             child: Row(
