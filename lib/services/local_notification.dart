@@ -39,15 +39,14 @@ class LocalNotificationServices {
       required String title,
       required String body,
       required String detail,
-      required int sec}) async {
+      required DateTime due}) async {
     final details = await _notificationDetails(detail);
 
     await _localNotificationService.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(
-            DateTime.now().add(Duration(seconds: sec)), tz.local),
+        tz.TZDateTime.from(due.subtract(const Duration(minutes: 10)), tz.local),
         details,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
