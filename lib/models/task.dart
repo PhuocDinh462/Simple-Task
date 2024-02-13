@@ -3,16 +3,39 @@ import 'package:uuid/uuid.dart';
 var uuid = const Uuid();
 
 class Task {
-  final String _id;
+  String id;
   String content;
   DateTime due;
   bool status;
 
-  String get id => _id;
-
   Task({
     required this.content,
     required this.due,
-  })  : _id = uuid.v1(),
+  })  : id = uuid.v1(),
         status = false;
+
+  Task.withAllFields({
+    required this.content,
+    required this.due,
+    required this.status,
+    required this.id,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'due': due.toIso8601String(),
+      'status': status,
+    };
+  }
+
+  static Task fromMap(Map<String, dynamic> map) {
+    return Task.withAllFields(
+      id: map['id'],
+      content: map['content'],
+      due: DateTime.parse(map['due']),
+      status: map['status'],
+    );
+  }
 }
