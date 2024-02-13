@@ -44,24 +44,24 @@ class TaskListProvider with ChangeNotifier {
     await saveTasks(taskList);
   }
 
-  void deleteTask(Task task) {
+  Future<void> deleteTask(Task task) async {
     taskList.remove(task);
     notifyListeners();
-    saveTasks(taskList);
+    await saveTasks(taskList);
   }
 
-  void deleteAllDoneTasks() {
+  Future<void> deleteAllDoneTasks() async {
     taskList.removeWhere((element) => element.status);
     notifyListeners();
-    saveTasks(taskList);
+    await saveTasks(taskList);
   }
 
-  void updateTask({
+  Future<void> updateTask({
     String? id,
     String? content,
     DateTime? due,
     bool? status,
-  }) {
+  }) async {
     if (id == null) return;
 
     int index = taskList.indexWhere((task) => task.id == id);
@@ -82,6 +82,6 @@ class TaskListProvider with ChangeNotifier {
     }
 
     notifyListeners();
-    saveTasks(taskList);
+    await saveTasks(taskList);
   }
 }
