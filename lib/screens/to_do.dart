@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
@@ -112,9 +113,13 @@ class ToDoState extends State<ToDo> {
                       }
                     })
                     // Search
-                    .where((element) => element.content
-                        .toLowerCase()
-                        .contains(searchText.toLowerCase()))
+                    .where((element) =>
+                        element.content
+                            .toLowerCase()
+                            .contains(searchText.toLowerCase()) ||
+                        DateFormat('MM/dd/yyyy HH:mm')
+                            .format(element.due)
+                            .contains(searchText))
                     // Status
                     .where((element) => !element.status)
                     .map((task) => Column(
