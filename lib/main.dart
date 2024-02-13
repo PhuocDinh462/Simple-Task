@@ -25,7 +25,12 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: MainColors.primary_300,
+        colorScheme: const ColorScheme.light(
+          primary: MainColors.primary_300,
+          onPrimary: Colors.white,
+          surface: Colors.white,
+          onSurface: TextColors.color_800,
+        ),
       ),
       home: const Navigation(),
       debugShowCheckedModeBanner: false,
