@@ -1,5 +1,4 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:to_do_list/services/utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -27,8 +26,11 @@ class LocalNotificationServices {
   }
 
   Future<void> showNotification(
-      {required int id, required String title, required String body}) async {
-    final details = await _notificationDetails();
+      {required int id,
+      required String title,
+      required String body,
+      required String detail}) async {
+    final details = await _notificationDetails(detail);
     await _localNotificationService.show(id, title, body, details);
   }
 
@@ -36,8 +38,9 @@ class LocalNotificationServices {
       {required int id,
       required String title,
       required String body,
+      required String detail,
       required int sec}) async {
-    final details = await _notificationDetails();
+    final details = await _notificationDetails(detail);
 
     await _localNotificationService.zonedSchedule(
         id,
@@ -51,13 +54,8 @@ class LocalNotificationServices {
         androidAllowWhileIdle: true);
   }
 
-  Future<NotificationDetails> _notificationDetails() async {
-    final largeIconImg = await Utils.downloadFile(
-        "https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg",
-        "fileName");
-    final styleNotificationInfo = BigPictureStyleInformation(
-        FilePathAndroidBitmap(largeIconImg),
-        largeIcon: FilePathAndroidBitmap(largeIconImg));
+  Future<NotificationDetails> _notificationDetails(String detail) async {
+    final styleNotificationInfo = BigTextStyleInformation(detail);
 
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails("channelId", "channelName",

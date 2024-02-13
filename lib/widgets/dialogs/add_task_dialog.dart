@@ -117,6 +117,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 id: 0,
                 title: "Your task will be due soon!",
                 body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
+                detail: taskContent,
                 sec: 5);
           },
           style: ElevatedButton.styleFrom(
