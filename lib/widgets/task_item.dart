@@ -15,65 +15,85 @@ class TaskItem extends StatelessWidget {
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // Checkbox, content and due to
-        Expanded(
-          flex: 1,
-          child: Row(
-            children: [
-              Checkbox(
-                checkColor: Colors.white,
-                fillColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.selected)) {
-                      return MainColors.primary_300;
-                    }
-                    return null;
-                  },
-                ),
-                value: task.status,
-                onChanged: (bool? value) =>
-                    taskListProvider.updateTask(id: task.id, status: value),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width - 100,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      task.content,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: TextColors.color_900,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: task.due.isAfter(DateTime.now()) || task.status
-                            ? TextColors.color_400
-                            : Colors.red,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+    return GestureDetector(
+      onTap: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(task.content),
+          content: Text(
+            'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
+            style: TextStyle(
+              color: task.due.isAfter(DateTime.now()) || task.status
+                  ? TextColors.color_400
+                  : Colors.red,
+            ),
           ),
         ),
+      ),
+      child: Container(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Checkbox, content and due to
+            Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    fillColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return MainColors.primary_300;
+                        }
+                        return null;
+                      },
+                    ),
+                    value: task.status,
+                    onChanged: (bool? value) =>
+                        taskListProvider.updateTask(id: task.id, status: value),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width - 100,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task.content,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            color: TextColors.color_900,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color:
+                                task.due.isAfter(DateTime.now()) || task.status
+                                    ? TextColors.color_400
+                                    : Colors.red,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-        // Tool menu
-        ToolMenu(task: task),
-      ],
+            // Tool menu
+            ToolMenu(task: task),
+          ],
+        ),
+      ),
     );
   }
 }

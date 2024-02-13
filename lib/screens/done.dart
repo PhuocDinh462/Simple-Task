@@ -122,7 +122,6 @@ class DoneState extends State<Done> {
                     .where((element) => element.status)
                     .map((task) => Column(
                           children: [
-                            const SizedBox(height: 15),
                             TaskItem(task: task),
                             const SizedBox(height: 15),
                             const Divider(
@@ -132,9 +131,9 @@ class DoneState extends State<Done> {
                               endIndent: 15,
                               color: TextColors.color_600,
                             ),
+                            const SizedBox(height: 15),
                           ],
                         )),
-                const SizedBox(height: 90),
               ],
             ),
           ),
