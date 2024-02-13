@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
-import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
 import 'package:to_do_list/widgets/dialogs/yes_no_dialog.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
 import 'package:to_do_list/widgets/task_item.dart';
@@ -26,19 +25,6 @@ class DoneState extends State<Done> {
         Provider.of<TaskListProvider>(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const AddTaskDialog();
-            },
-          );
-        },
-        foregroundColor: TextColors.color_50,
-        backgroundColor: MainColors.primary_300,
-        child: const Icon(Icons.add),
-      ),
       body: Column(
         children: [
           // Header

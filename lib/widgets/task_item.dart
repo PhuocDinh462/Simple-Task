@@ -59,7 +59,7 @@ class TaskItem extends StatelessWidget {
                       'Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}',
                       style: TextStyle(
                         fontSize: 14,
-                        color: task.due.isAfter(DateTime.now())
+                        color: task.due.isAfter(DateTime.now()) || task.status
                             ? TextColors.color_400
                             : Colors.red,
                       ),
