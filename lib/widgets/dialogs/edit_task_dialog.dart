@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
@@ -81,11 +82,8 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
               const Text('Due:'),
               TextButton(
                 onPressed: () => _selectDateAndTime(context),
-                child: Text(
-                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year} '
-                  '${_selectedTime.hour < 10 ? 0 : ""}${_selectedTime.hour}:'
-                  '${_selectedTime.minute < 10 ? 0 : ""}${_selectedTime.minute}',
-                ),
+                child:
+                    Text(DateFormat('MM/dd/yyyy HH:mm').format(_selectedDate)),
               ),
             ],
           ),
