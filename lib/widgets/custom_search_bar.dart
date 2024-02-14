@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/models/debouncer.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final Color textColor;
   final String hintText;
   final ValueChanged<String> onChanged;
+  final _debouncer = Debouncer(milliseconds: 500);
 
-  const CustomSearchBar(
+  CustomSearchBar(
       {super.key,
       required this.textColor,
       required this.hintText,
@@ -15,7 +17,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: TextField(
-        onChanged: (value) => onChanged(value),
+        onChanged: (value) => _debouncer.run(() => onChanged(value)),
         autofocus: true,
         cursorColor: textColor,
         decoration: InputDecoration(
