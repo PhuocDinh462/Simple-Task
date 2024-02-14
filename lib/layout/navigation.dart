@@ -55,7 +55,7 @@ class _NavigationState extends State<Navigation> {
       body: <Widget>[
         const ToDo(),
         const Done(),
-        const Settings()
+        Settings()
       ][currentScreenIndex],
     );
   }

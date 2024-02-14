@@ -6,11 +6,11 @@ import 'package:to_do_list/widgets/dialogs/yes_no_dialog.dart';
 import 'package:provider/provider.dart';
 
 class Settings extends StatelessWidget {
-  Settings({super.key});
-  final LocalNotificationServices services = LocalNotificationServices();
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final LocalNotificationServices services = LocalNotificationServices();
     services.init();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
