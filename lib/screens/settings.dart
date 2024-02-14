@@ -69,24 +69,27 @@ class Settings extends StatelessWidget {
                             });
                       },
                     ),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.delete_forever_outlined,
-                          size: 28,
-                          color: Color.fromARGB(255, 211, 26, 13),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Delete Data',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: TextColors.color_700,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.delete_forever_outlined,
+                            size: 28,
+                            color: Color.fromARGB(255, 211, 26, 13),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            'Delete Data',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: TextColors.color_700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
