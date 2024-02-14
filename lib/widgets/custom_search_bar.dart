@@ -36,6 +36,7 @@ class CustomSearchBar extends StatelessWidget {
         style: TextStyle(
           fontSize: 20,
           color: textColor,
+          decorationColor: textColor,
         ),
       ),
     );

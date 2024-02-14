@@ -61,8 +61,12 @@ class DoneState extends State<Done> {
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () =>
-                              setState(() => searchOpen = !searchOpen),
+                          onPressed: () => setState(() {
+                            if (searchOpen) {
+                              searchText = "";
+                            }
+                            searchOpen = !searchOpen;
+                          }),
                           icon: Icon(
                               searchOpen ? Icons.clear_sharp : Icons.search),
                           iconSize: 32,
