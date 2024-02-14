@@ -60,7 +60,7 @@ class TaskItem extends StatelessWidget {
 
                       // Notification
                       if (value == true) {
-                        await services.cancelSchNotification(
+                        await services.cancelSchNotificationById(
                             id: task.id.hashCode);
                       } else {
                         await services.showSchNotification(
@@ -162,7 +162,7 @@ class ToolMenu extends StatelessWidget {
                 );
               } else {
                 taskListProvider.deleteTask(task);
-                await services.cancelSchNotification(id: task.id.hashCode);
+                await services.cancelSchNotificationById(id: task.id.hashCode);
               }
             },
             child: Row(

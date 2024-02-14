@@ -116,7 +116,8 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             Navigator.of(context).pop(); // Close the dialog
 
             // Notification
-            await services.cancelSchNotification(id: _selectedTask.id.hashCode);
+            await services.cancelSchNotificationById(
+                id: _selectedTask.id.hashCode);
             await services.showSchNotification(
                 id: _selectedTask.id.hashCode,
                 title: "Your task will be due soon!",

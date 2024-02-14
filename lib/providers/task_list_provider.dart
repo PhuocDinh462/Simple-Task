@@ -26,34 +26,40 @@ Future<List<Task>> loadTasks() async {
 }
 
 class TaskListProvider with ChangeNotifier {
-  List<Task> taskList = [];
+  List<Task> _taskList = [];
 
-  List<Task> get getTaskList => taskList;
+  List<Task> get getTaskList => _taskList;
 
   TaskListProvider() {
     // Load tasks
     loadTasks().then((loadedTasks) async {
-      taskList = loadedTasks;
+      _taskList = loadedTasks;
       notifyListeners();
     });
   }
 
   Future<void> addTask(Task task) async {
-    taskList.add(task);
+    _taskList.add(task);
     notifyListeners();
-    await saveTasks(taskList);
+    await saveTasks(_taskList);
   }
 
   Future<void> deleteTask(Task task) async {
-    taskList.remove(task);
+    _taskList.remove(task);
     notifyListeners();
-    await saveTasks(taskList);
+    await saveTasks(_taskList);
   }
 
   Future<void> deleteAllDoneTasks() async {
-    taskList.removeWhere((element) => element.status);
+    _taskList.removeWhere((element) => element.status);
     notifyListeners();
-    await saveTasks(taskList);
+    await saveTasks(_taskList);
+  }
+
+  Future<void> deleteAll() async {
+    _taskList.clear();
+    notifyListeners();
+    await saveTasks(_taskList);
   }
 
   Future<void> updateTask({
@@ -64,10 +70,10 @@ class TaskListProvider with ChangeNotifier {
   }) async {
     if (id == null) return;
 
-    int index = taskList.indexWhere((task) => task.id == id);
+    int index = _taskList.indexWhere((task) => task.id == id);
     if (index == -1) return;
 
-    Task taskToUpdate = taskList[index];
+    Task taskToUpdate = _taskList[index];
 
     if (content != null) {
       taskToUpdate.content = content;
@@ -82,6 +88,6 @@ class TaskListProvider with ChangeNotifier {
     }
 
     notifyListeners();
-    await saveTasks(taskList);
+    await saveTasks(_taskList);
   }
 }

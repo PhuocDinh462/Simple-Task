@@ -71,10 +71,14 @@ class LocalNotificationServices {
         android: androidNotificationDetails, iOS: iosNotificationDetails);
   }
 
-  Future<void> cancelSchNotification({
+  Future<void> cancelSchNotificationById({
     required int id,
   }) async {
     await _localNotificationService.cancel(id);
+  }
+
+  Future<void> cancelAllSchNotification() async {
+    await _localNotificationService.cancelAll();
   }
 
   void onSelectNotification(String? payload) {

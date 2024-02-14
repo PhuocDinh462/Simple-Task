@@ -98,7 +98,7 @@ class ToDoState extends State<ToDo> {
           Expanded(
             child: ListView(
               children: [
-                ...taskListProvider.taskList
+                ...taskListProvider.getTaskList
                     // Filter
                     .where((element) {
                       if (selectedMenu == FilterItem.all) {
