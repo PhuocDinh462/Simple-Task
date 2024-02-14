@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/layout/navigation.dart';
 import 'package:flutter/services.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:to_do_list/layout/navigation.dart';
 
-void main() => runApp(
-      ChangeNotifierProvider(
-        create: (context) => TaskListProvider(),
-        child: const MyApp(),
-      ),
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final notificationStatus = await Permission.notification.status;
+  if (!notificationStatus.isGranted) {
+    await Permission.notification.request();
+  }
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TaskListProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
