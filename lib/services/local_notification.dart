@@ -9,7 +9,7 @@ class LocalNotificationServices {
   Future<void> init() async {
     tz.initializeTimeZones();
     const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('logo');
 
     IOSInitializationSettings iosInitializationSettings =
         IOSInitializationSettings(
