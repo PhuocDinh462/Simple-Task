@@ -9,7 +9,7 @@ class NotificationService {
   Future<void> initNotification() async {
     tz.initializeTimeZones();
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('ic_notification');
+        const AndroidInitializationSettings('@mipmap/launcher_icon');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,

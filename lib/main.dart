@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
+import 'package:to_do_list/services/notification.service.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,6 +14,8 @@ void main() async {
   if (!notificationStatus.isGranted) {
     await Permission.notification.request();
   }
+
+  NotificationService().initNotification();
 
   runApp(
     ChangeNotifierProvider(

@@ -10,8 +10,6 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NotificationService services = NotificationService();
-    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -65,7 +63,7 @@ class Settings extends StatelessWidget {
                             content: 'Delete all data?',
                             onYesPressed: () {
                               taskListProvider.deleteAll();
-                              services.cancelAllSchNotification();
+                              NotificationService().cancelAllSchNotification();
                             });
                       },
                     ),

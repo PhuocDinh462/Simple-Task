@@ -8,13 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:to_do_list/widgets/dialogs/edit_task_dialog.dart';
 
 class TaskItem extends StatelessWidget {
-  TaskItem({Key? key, required this.task}) : super(key: key);
+  const TaskItem({super.key, required this.task});
   final Task task;
-  final NotificationService services = NotificationService();
 
   @override
   Widget build(BuildContext context) {
-    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -60,10 +58,10 @@ class TaskItem extends StatelessWidget {
 
                       // Notification
                       if (value == true) {
-                        await services.cancelSchNotificationById(
-                            id: task.id.hashCode);
+                        await NotificationService()
+                            .cancelSchNotificationById(id: task.id.hashCode);
                       } else {
-                        await services.showSchNotification(
+                        await NotificationService().showSchNotification(
                           id: task.id.hashCode,
                           title: task.content,
                           body:
@@ -118,16 +116,14 @@ class TaskItem extends StatelessWidget {
 }
 
 class ToolMenu extends StatelessWidget {
-  ToolMenu({
-    Key? key,
+  const ToolMenu({
+    super.key,
     required this.task,
-  }) : super(key: key);
+  });
   final Task task;
-  final NotificationService services = NotificationService();
 
   @override
   Widget build(BuildContext context) {
-    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -163,7 +159,8 @@ class ToolMenu extends StatelessWidget {
                 );
               } else {
                 taskListProvider.deleteTask(task);
-                await services.cancelSchNotificationById(id: task.id.hashCode);
+                await NotificationService()
+                    .cancelSchNotificationById(id: task.id.hashCode);
               }
             },
             child: Row(

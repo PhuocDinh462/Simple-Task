@@ -20,17 +20,12 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   late TimeOfDay _selectedTime;
   late final Task _selectedTask = widget.selectedTask;
 
-  late final NotificationService services;
-
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: _selectedTask.content);
     _selectedDate = _selectedTask.due;
     _selectedTime = TimeOfDay.fromDateTime(_selectedTask.due);
-
-    services = NotificationService();
-    services.initNotification();
   }
 
   @override
@@ -116,9 +111,9 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             Navigator.of(context).pop(); // Close the dialog
 
             // Notification
-            await services.cancelSchNotificationById(
-                id: _selectedTask.id.hashCode);
-            await services.showSchNotification(
+            await NotificationService()
+                .cancelSchNotificationById(id: _selectedTask.id.hashCode);
+            await NotificationService().showSchNotification(
               id: _selectedTask.id.hashCode,
               title: taskContent,
               body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",

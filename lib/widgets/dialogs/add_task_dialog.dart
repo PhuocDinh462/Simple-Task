@@ -18,17 +18,12 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
 
-  late final NotificationService services;
-
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController();
     _selectedDate = DateTime.now();
     _selectedTime = TimeOfDay.now();
-
-    services = NotificationService();
-    services.initNotification();
   }
 
   @override
@@ -115,7 +110,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
             Navigator.of(context).pop(); // Close the dialog
 
             // Add notification
-            await services.showSchNotification(
+            await NotificationService().showSchNotification(
               id: newTask.id.hashCode,
               title: taskContent,
               body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
