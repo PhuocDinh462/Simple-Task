@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
-import 'package:to_do_list/services/local_notification.dart';
+import 'package:to_do_list/services/notification.service.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/widgets/dialogs/yes_no_dialog.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +10,8 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocalNotificationServices services = LocalNotificationServices();
-    services.init();
+    final NotificationService services = NotificationService();
+    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 

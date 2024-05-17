@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_list/services/notification.service.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/widgets/dialogs/edit_task_dialog.dart';
-import 'package:to_do_list/services/local_notification.dart';
 
 class TaskItem extends StatelessWidget {
   TaskItem({Key? key, required this.task}) : super(key: key);
   final Task task;
-  final LocalNotificationServices services = LocalNotificationServices();
+  final NotificationService services = NotificationService();
 
   @override
   Widget build(BuildContext context) {
-    services.init();
+    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 
@@ -46,9 +46,9 @@ class TaskItem extends StatelessWidget {
                 children: [
                   Checkbox(
                     checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.selected)) {
+                    fillColor: WidgetStateProperty.resolveWith<Color?>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.selected)) {
                           return MainColors.primary_300;
                         }
                         return null;
@@ -64,12 +64,13 @@ class TaskItem extends StatelessWidget {
                             id: task.id.hashCode);
                       } else {
                         await services.showSchNotification(
-                            id: task.id.hashCode,
-                            title: "Your task will be due soon!",
-                            body:
-                                "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}",
-                            detail: task.content,
-                            due: task.due);
+                          id: task.id.hashCode,
+                          title: task.content,
+                          body:
+                              "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(task.due)}",
+                          detail: task.content,
+                          due: task.due,
+                        );
                       }
                     },
                   ),
@@ -122,11 +123,11 @@ class ToolMenu extends StatelessWidget {
     required this.task,
   }) : super(key: key);
   final Task task;
-  final LocalNotificationServices services = LocalNotificationServices();
+  final NotificationService services = NotificationService();
 
   @override
   Widget build(BuildContext context) {
-    services.init();
+    services.initNotification();
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
 

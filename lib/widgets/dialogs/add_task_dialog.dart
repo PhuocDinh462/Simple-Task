@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/models/task.dart';
-import 'package:to_do_list/services/local_notification.dart';
+import 'package:to_do_list/services/notification.service.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +18,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
 
-  late final LocalNotificationServices services;
+  late final NotificationService services;
 
   @override
   void initState() {
@@ -27,8 +27,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
     _selectedDate = DateTime.now();
     _selectedTime = TimeOfDay.now();
 
-    services = LocalNotificationServices();
-    services.init();
+    services = NotificationService();
+    services.initNotification();
   }
 
   @override
@@ -116,11 +116,12 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
 
             // Add notification
             await services.showSchNotification(
-                id: newTask.id.hashCode,
-                title: "Your task will be due soon!",
-                body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
-                detail: taskContent,
-                due: dueDate);
+              id: newTask.id.hashCode,
+              title: taskContent,
+              body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
+              detail: taskContent,
+              due: dueDate,
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: MainColors.primary_300,

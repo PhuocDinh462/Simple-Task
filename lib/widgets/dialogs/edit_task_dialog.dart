@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/models/task.dart';
-import 'package:to_do_list/services/local_notification.dart';
+import 'package:to_do_list/services/notification.service.dart';
 import 'package:to_do_list/utils/colors.dart';
 import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   late TimeOfDay _selectedTime;
   late final Task _selectedTask = widget.selectedTask;
 
-  late final LocalNotificationServices services;
+  late final NotificationService services;
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
     _selectedDate = _selectedTask.due;
     _selectedTime = TimeOfDay.fromDateTime(_selectedTask.due);
 
-    services = LocalNotificationServices();
-    services.init();
+    services = NotificationService();
+    services.initNotification();
   }
 
   @override
@@ -119,11 +119,12 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             await services.cancelSchNotificationById(
                 id: _selectedTask.id.hashCode);
             await services.showSchNotification(
-                id: _selectedTask.id.hashCode,
-                title: "Your task will be due soon!",
-                body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
-                detail: taskContent,
-                due: dueDate);
+              id: _selectedTask.id.hashCode,
+              title: taskContent,
+              body: "Due: ${DateFormat('MM/dd/yyyy HH:mm').format(dueDate)}",
+              detail: taskContent,
+              due: dueDate,
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: MainColors.primary_300,
