@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:to_do_list/utils/empty.dart';
 import 'package:to_do_list/widgets/custom_search_bar.dart';
 import 'package:to_do_list/widgets/dialogs/add_task_dialog.dart';
 import 'package:to_do_list/widgets/filter_menu.dart';
@@ -9,7 +10,7 @@ import 'package:to_do_list/providers/task_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
-  const ToDo({Key? key}) : super(key: key);
+  const ToDo({super.key});
 
   @override
   State<StatefulWidget> createState() => ToDoState();
@@ -24,6 +25,30 @@ class ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     final TaskListProvider taskListProvider =
         Provider.of<TaskListProvider>(context);
+
+    bool isEmpty = taskListProvider.getTaskList
+        // Filter
+        .where((element) {
+          if (selectedMenu == FilterItem.all) {
+            return true;
+          } else if (selectedMenu == FilterItem.today) {
+            final now = DateTime.now();
+            return element.due.year == now.year &&
+                element.due.month == now.month &&
+                element.due.day == now.day;
+          } else {
+            return element.due.isAfter(DateTime.now());
+          }
+        })
+        // Search
+        .where((element) =>
+            element.content.toLowerCase().contains(searchText.toLowerCase()) ||
+            DateFormat('MM/dd/yyyy HH:mm')
+                .format(element.due)
+                .contains(searchText))
+        // Status
+        .where((element) => !element.status)
+        .isEmpty;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -100,49 +125,55 @@ class ToDoState extends State<ToDo> {
 
           // Body
           Expanded(
-            child: ListView(
-              children: [
-                ...taskListProvider.getTaskList
-                    // Filter
-                    .where((element) {
-                      if (selectedMenu == FilterItem.all) {
-                        return true;
-                      } else if (selectedMenu == FilterItem.today) {
-                        final now = DateTime.now();
-                        return element.due.year == now.year &&
-                            element.due.month == now.month &&
-                            element.due.day == now.day;
-                      } else {
-                        return element.due.isAfter(DateTime.now());
-                      }
-                    })
-                    // Search
-                    .where((element) =>
-                        element.content
-                            .toLowerCase()
-                            .contains(searchText.toLowerCase()) ||
-                        DateFormat('MM/dd/yyyy HH:mm')
-                            .format(element.due)
-                            .contains(searchText))
-                    // Status
-                    .where((element) => !element.status)
-                    .map((task) => Column(
-                          children: [
-                            TaskItem(task: task),
-                            const SizedBox(height: 15),
-                            const Divider(
-                              height: .5,
-                              thickness: .5,
-                              indent: 15,
-                              endIndent: 15,
-                              color: TextColors.color_600,
+            child: isEmpty
+                ? const Center(child: Empty())
+                : ListView(
+                    children: [
+                      ...taskListProvider.getTaskList
+                          // Filter
+                          .where(
+                            (element) {
+                              if (selectedMenu == FilterItem.all) {
+                                return true;
+                              } else if (selectedMenu == FilterItem.today) {
+                                final now = DateTime.now();
+                                return element.due.year == now.year &&
+                                    element.due.month == now.month &&
+                                    element.due.day == now.day;
+                              } else {
+                                return element.due.isAfter(DateTime.now());
+                              }
+                            },
+                          )
+                          // Search
+                          .where((element) =>
+                              element.content
+                                  .toLowerCase()
+                                  .contains(searchText.toLowerCase()) ||
+                              DateFormat('MM/dd/yyyy HH:mm')
+                                  .format(element.due)
+                                  .contains(searchText))
+                          // Status
+                          .where((element) => !element.status)
+                          .map(
+                            (task) => Column(
+                              children: [
+                                TaskItem(task: task),
+                                const SizedBox(height: 15),
+                                const Divider(
+                                  height: .5,
+                                  thickness: .5,
+                                  indent: 15,
+                                  endIndent: 15,
+                                  color: TextColors.color_600,
+                                ),
+                                const SizedBox(height: 15),
+                              ],
                             ),
-                            const SizedBox(height: 15),
-                          ],
-                        )),
-                const SizedBox(height: 75),
-              ],
-            ),
+                          ),
+                      const SizedBox(height: 75),
+                    ],
+                  ),
           ),
         ],
       ),
